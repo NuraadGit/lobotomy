@@ -1,0 +1,53 @@
+name: Build tweak
+
+on:
+  push:
+    paths:
+      - ".github/workflows/build.yml"
+      - "Tweak.x"
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build tweak
+    runs-on: macos-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install Theos
+        run: bash -c "$(curl -fsSL 'https://raw.githubusercontent.com/roothide/theos/master/bin/install-theos')"
+
+      - name: Setup Theos environment
+        run: echo "THEOS=~/theos" >> $GITHUB_ENV
+
+      - name: Make tweak
+        run: make package
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: gy.nuraad.lobotomy_6.9.prf-1+debug_iphoneos-arm64e.deb
+          path: ./packages/gy.nuraad.lobotomy_6.9.prf-1+debug_iphoneos-arm64e.deb
+
+      - name: Delete old release
+        uses: dev-drprasad/delete-tag-and-release@v0.2.1
+        with:
+          delete_release: true
+          tag_name: release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Get artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: gy.nuraad.lobotomy_6.9.prf-1+debug_iphoneos-arm64e.deb
+
+      - name: Create new rolling release
+        uses: ncipollo/release-action@v1
+        with:
+          name: skid wars
+          body: "lobotomy"
+          artifacts: "gy.nuraad.lobotomy_6.9.prf-1+debug_iphoneos-arm64e.deb"
+          tag: release
+          token: ${{ secrets.GITHUB_TOKEN }}
