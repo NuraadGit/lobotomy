@@ -2,6 +2,6 @@
 
 %hook CSStatusTextView
 - (void)setInternalLegalText:(NSString *)string {
-    %orig(@"");
+    %orig(@"lobotomy");
 }
 %end
