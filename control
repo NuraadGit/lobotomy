@@ -1,9 +1,9 @@
-Package: com.flame.removeconfidential
-Name: Remove Confidential
-Version: 1.0.2
+Package: gy.nuraad.lobotomy
+Name: lobotomy
+Version: 6.9
 Architecture: iphoneos-arm64
-Description: Removes the "Confidential & Proprietary" text from the lockscreen.
-Maintainer: Flame
-Author: Flame
+Description: adds lobotomy instead of proprietary and confidential text
+Maintainer: nuraad
+Author: nuraad
 Section: Tweaks
 Depends: mobilesubstrate (>= 0.9.5000)
